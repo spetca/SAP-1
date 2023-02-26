@@ -104,7 +104,7 @@ begin
 
         4'b1110: begin
         //out
-            if(current_state == DECODE) regmap = 12'b001001111111; // enable A, load Output
+            if(current_state == DECODE) regmap = 12'b001001111110; // enable A, load Output
         end
 
         4'b1111: begin

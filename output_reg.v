@@ -5,7 +5,7 @@ module output_reg(
     output [7:0] bdisp
 );
 
-reg [7:0] t_outputreg;
+reg [7:0] t_outputreg = 8'b0000000;
 always @(posedge clk)
 begin
     if(~n_lo) t_outputreg <= dbus; 

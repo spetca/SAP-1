@@ -17,8 +17,8 @@ async def basic_count(dut):
     dut.u_ram.mem[0].value = BinaryValue('00011110',8)
     dut.u_ram.mem[1].value = BinaryValue('00101111',8)
     dut.u_ram.mem[2].value = BinaryValue('11100000',8)
-    dut.u_ram.mem[14] = 100
-    dut.u_ram.mem[15] = 100
+    dut.u_ram.mem[14].value = 2
+    dut.u_ram.mem[15].value = 2
 
     cocotb.start_soon(Clock(dut.clk, 1, units="ns").start())
 
