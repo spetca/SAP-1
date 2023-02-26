@@ -1,6 +1,6 @@
 __pycache__/*
-*.vcd
+.vcd
 sim_build/*
-*.xml
+.xml
 .f
 .vvp
