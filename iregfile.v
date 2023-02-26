@@ -1,10 +1,10 @@
 module iregfile(
     input clk, 
-    inout [7:0] dbus,
+    inout [7:0] iregdbus,
     input n_load,
     input n_en, 
     input clr,
-    output [3:0] regout
+    output [3:0] iregout
 );
 /* 
 regfile contains the controls for: 
@@ -14,12 +14,12 @@ regfile contains the controls for:
     - loads/enables for each
     - dbus connection
 */
-reg [7:0] t_regout = 8'b00000000;
+reg [7:0] t_ireg = 8'b00000000;
 
 always @(clr)
 begin
     if(clr) begin
-        t_regout <= 8'b0;
+        t_ireg <= 8'b0;
     end
 end
 
@@ -27,12 +27,12 @@ always @(posedge clk)
 begin
 
     if(!n_load) begin
-         t_regout <= dbus;
+         t_ireg <= iregdbus;
     end
 end 
 // assign dbus based on enables
-assign dbus   = !n_en ?  {4'b0000, regout[3:0]} : 8'bZZZZZZZZ;
-assign regout = t_regout;
+assign iregout =  {4'b0000,t_ireg[7:4]};
+assign iregdbus   = !n_en ?  {4'b0000,t_ireg[3:0]} : 8'bZZZZZZZZ;
 // Dump waves
 initial begin
 $dumpfile("dump.vcd");

@@ -9,17 +9,17 @@ module ram(
 );
 
 reg [7:0] mem [16]; 
-reg [7:0] t_doutreg = 8'b00000000; 
-always @(negedge clk)
+reg [7:0] t_ramreg = 8'b00000000; 
+always @(posedge clk)
 begin
     if(prog_mode) mem[address] <= din;
 end
-always @(posedge clk)
+always @(*)
 begin
-    t_doutreg <= mem[address]; 
+    t_ramreg <= mem[address]; 
 end
 
-assign dout = ~n_ce ? t_doutreg : 8'bZZZZZZZZ;
+assign dout = ~n_ce ? t_ramreg : 8'bZZZZZZZZ;
 
 // Dump waves
 initial begin

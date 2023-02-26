@@ -9,7 +9,7 @@ module alu(
 
 reg [7:0] t_dbus = 8'b00000000;
 
-always @(posedge clk)
+always @(*)
 begin
     if(!eu) 
         t_dbus <= areg+breg; 

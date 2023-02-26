@@ -10,21 +10,20 @@ async def basic_count(dut):
     dut.clr.value =  1
     
     # write ram, confirmed this works
+    # initialize all ram locations
+    for i in range(16):
+        dut.u_ram.mem[i].value = BinaryValue('00000000',8)
+    # initialize specifics
     dut.u_ram.mem[0].value = BinaryValue('00011110',8)
     dut.u_ram.mem[1].value = BinaryValue('00101111',8)
     dut.u_ram.mem[2].value = BinaryValue('11100000',8)
-    for i in range(3,16):
-        dut.u_ram.mem[i].value = BinaryValue('00000000',8)
+    dut.u_ram.mem[14] = 100
+    dut.u_ram.mem[15] = 100
 
     cocotb.start_soon(Clock(dut.clk, 1, units="ns").start())
-        
-    dut.u_ram.n_ce.value = 1; 
-    for i in range(0,16):
-        await RisingEdge(dut.clk) # toggle clock to latch it
-        dut.u_ram.address.value = i
 
     await RisingEdge(dut.clk)
-    for i in range(20):
+    for i in range(18):
        await RisingEdge(dut.clk) # toggle clock to latch it
 
   

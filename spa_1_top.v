@@ -13,8 +13,10 @@ wire [7:0] b_out_wire;
 
 wire [3:0] wire_ram_address; 
 wire [3:0] wire_ins_to_control; 
+
+reg [7:0] bdisp; 
 // controller sequencers
-wire clk, n_clk, n_lo, n_clr, cp, ep, n_lm, n_ce, n_li, n_ei, n_la, ea, su, eu; 
+wire clk, n_clk, n_lo, n_clr, cp, ep, n_lm, n_ce, n_li, n_ei, n_la,n_lb, ea, su, eu; 
 assign n_clear = ~clr; 
 // LHS of WBUS
 /**************************
@@ -32,7 +34,7 @@ pc u_pc(.cp(cp),
 mar u_mar(.n_lm(n_lm), 
           .clk(clk), 
           .dbus(wbus), 
-          .ram0(wire_ram_address));
+          .o_marnibble(wire_ram_address));
 
 /**************************
 ***         RAM         ***
@@ -49,11 +51,11 @@ ram u_ram(.clk(clk),
 ***        I REG        ***
 **********************(*****/
 iregfile u_ireg(.clk(clk), 
-                .dbus(wbus),
+                .iregdbus(wbus),
                 .n_load(n_li),
                 .n_en(n_ei),
                 .clr(clr),
-                .regout(wire_ins_to_control));
+                .iregout(wire_ins_to_control));
 
  /**************************
 ***      CONTROLLER      ***
@@ -70,7 +72,8 @@ controller u_controller(.instruction(wire_ins_to_control),
                         .ea(ea),
                         .su(su),
                         .eu(eu),
-                        .n_lo(n_lo));
+                        .n_lo(n_lo),
+                        .n_lb(n_lb));
 // RHS OF WBUS 
 // RHS OF WBUS
 /**************************
@@ -101,6 +104,11 @@ regfile u_breg (.clk(clk),
  /**************************
 ***      OUTPUT REG      ***
 ****************************/
+
+output_reg u_oreg(.dbus(wbus),
+                  .n_lo(n_lo),
+                  .clk(clk),
+                  .bdisp(bdisp));
 
 initial begin
 $dumpfile("dump.vcd");
